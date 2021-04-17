@@ -1,6 +1,7 @@
 package com.cg.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,11 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 		return schemedao.findAll();
 	}
 
+	@Override
+	public LoanScheme getSchemeById(Integer id) {
+		Optional<LoanScheme> scheme = schemedao.findById(id);
+		return scheme.get();
+	}
+
 }
+

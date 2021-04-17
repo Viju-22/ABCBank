@@ -1,13 +1,19 @@
 package com.cg.entities;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.ws.rs.DefaultValue;
+
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
-@Table(name="loanStatus")
+@Table(name="loanrequest")
 public class LoanRequest {
 	
 	@Id
@@ -20,6 +26,7 @@ public class LoanRequest {
 	private long income;
 	private String address;
 	private long adhar_no;
+	private Date date;
 	private String status;
 	
 	public LoanRequest() {
@@ -27,7 +34,7 @@ public class LoanRequest {
 	}
 
 	public LoanRequest(int loan_sid, String loantype, int cust_id, String cust_name, int age, long income,
-			String address, long adhar_no, String status) {
+			String address, long adhar_no, Date date, String status) {
 		super();
 		this.loan_sid = loan_sid;
 		this.loantype = loantype;
@@ -37,6 +44,7 @@ public class LoanRequest {
 		this.income = income;
 		this.address = address;
 		this.adhar_no = adhar_no;
+		this.date = date;
 		this.status = status;
 	}
 
@@ -104,6 +112,14 @@ public class LoanRequest {
 		this.adhar_no = adhar_no;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -116,9 +132,8 @@ public class LoanRequest {
 	public String toString() {
 		return "LoanRequest [loan_sid=" + loan_sid + ", loantype=" + loantype + ", cust_id=" + cust_id + ", cust_name="
 				+ cust_name + ", age=" + age + ", income=" + income + ", address=" + address + ", adhar_no=" + adhar_no
-				+ ", status=" + status + "]";
+				+ ", date=" + date + ", status=" + status + "]";
 	}
-	
 	
 	
 	
