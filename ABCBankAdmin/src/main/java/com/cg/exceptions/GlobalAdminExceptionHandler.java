@@ -31,11 +31,7 @@ public class GlobalAdminExceptionHandler {
 		return error;
 	}
 	
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<String> handleContraintViolationException(ConstraintViolationException e) {
-		return new ResponseEntity<String>("Validation error on path parameter :" + e.getMessage(),HttpStatus.BAD_REQUEST);
-	}
+	
 	
 }
 

@@ -7,9 +7,9 @@ import com.cg.entities.LoanScheme;
 
 public interface LoanSchemeService {
 	
-	public List<LoanScheme> addLoanScheme(LoanScheme ls);
-	public List<LoanScheme> updateLoanScheme(LoanScheme ls);
-	public List<LoanScheme> deleteLoanScheme(Integer id);
+	public LoanScheme addLoanScheme(LoanScheme ls);
+	public LoanScheme updateLoanScheme(LoanScheme ls);
+	public Boolean deleteLoanScheme(Integer id);
 	public List<LoanScheme> viewAllScheme();
 	
 	public LoanScheme getSchemeById(Integer id);

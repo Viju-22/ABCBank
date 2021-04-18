@@ -28,11 +28,21 @@ public class AbcBankGlobalExceptionHandler {
 		return error;	
 
 	}
+    
 
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<String> handleContraintViolationException(ConstraintViolationException e) {
-		return new ResponseEntity<String>("Validation error on path parameter :" + e.getMessage(),HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(LoanRequestNotFoundException.class)
+    @ResponseStatus( value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+	public ErrorInfo handleLoanRequestNotFoundException(LoanRequestNotFoundException e, HttpServletRequest request) {
+		
+		System.out.println("In Controller advice to find the requestId");
+		
+		ErrorInfo error = new ErrorInfo();
+		error.setUrl(request.getRequestURI());
+		error.setMessage(e.getMessage());
+		return error;	
+
 	}
+    
 
 }

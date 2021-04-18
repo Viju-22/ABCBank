@@ -1,10 +1,15 @@
 package com.cg.controllers;
 
+import java.io.Serializable;
+
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +29,15 @@ import io.swagger.annotations.Api;
 @Api("Api for LadController")
 @RestController()
 @RequestMapping("/lad")
-public class LadController {
+@Validated
+public class LadController implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	private static final Logger logger = LoggerFactory.getLogger(LadController.class);
 	
 	
@@ -34,13 +46,14 @@ public class LadController {
 	
 	
 	@PutMapping("/verifyloanrequest")
-	public List<LoanRequest> verifyLoanRequest(@RequestBody LoanRequest request){
+	public String verifyLoanRequest(@Valid @RequestBody LoanRequest request){
 		return requestservice.verifyLoanRequest(request);	
 		
 	}
 	
-	@GetMapping("/getloanrequestbyid")
+	@GetMapping("/getloanrequestbyid/{id}")
 	public LoanRequest getRequestById(@PathVariable Integer id) throws LoanRequestNotFoundException {
+		
 		LoanRequest req = null;
 		try{
 			logger.info("LoanRequest Id to be searched..."+id);
@@ -53,21 +66,7 @@ public class LadController {
 		return req;
 	}
 	
-	@DeleteMapping("/deleteLoanRequest/{id}")
-	public List<LoanRequest> deleteLoanRequest(@PathVariable Integer id) throws LoanRequestNotFoundException{
-		logger.info("In Lad Controller to delete an LoanRequest by Id ..>!!!");
-		
 	
-		try{
-			
-		logger.info("LoanRequest to be deleted..."+id);
-			 requestservice.getRequestById(id);
-		}catch(Exception e) {
-			throw new LoanRequestNotFoundException("Enter an existing LoanRequest id to be deleted  ");
-		}
-		
-		return requestservice.deleteloanRequest(id);
-	}
 	
 	@GetMapping("/viewallrequests")
 	public List<LoanRequest> viewAllLoanRequests(){

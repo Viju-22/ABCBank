@@ -7,11 +7,11 @@ import com.cg.entities.LoanRequest;
 
 public interface CustomerService {
 	
-	public List<Customer> addCustomer(Customer c);
-	public List<Customer> updateCustomer(Customer c);
-	public List<Customer> removeCustomer(Integer id);
+	public Customer addCustomer(Customer c);
 	public Customer getCustomerById(Integer id);
-    public void applyForLoan(LoanRequest request);
+    public String applyForLoan(LoanRequest request);
+    public List<Customer> viewAllCustomers();
     
+    public double checkEmi(String scheme, double amount, double period);
    
 }

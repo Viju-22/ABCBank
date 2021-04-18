@@ -21,35 +21,64 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	LoanRequestDao requestdao;
 
-	
-
 	@Override
-	public List<Customer> addCustomer(Customer c) {
+	public Customer addCustomer(Customer c) {
 		cdao.saveAndFlush(c);
-		return cdao.findAll();
-	}
-
-	@Override
-	public List<Customer> updateCustomer(Customer c) {
-		cdao.saveAndFlush(c);
-		return cdao.findAll();
-	}
-
-	@Override
-	public List<Customer> removeCustomer(Integer id) {
-		cdao.deleteById(id);
-		return cdao.findAll();
-	}
-
-	@Override
-	public void applyForLoan(LoanRequest request) {
-		requestdao.saveAndFlush(request);
+		return c;
 	}
 
 	@Override
 	public Customer getCustomerById(Integer id) {
 		Optional<Customer> customer = cdao.findById(id);
 		return customer.get();
+	}
+
+	@Override
+	public String applyForLoan(LoanRequest request) {
+		requestdao.saveAndFlush(request);
+		return "Applied Successfully";
+	}
+
+	@Override
+	public List<Customer> viewAllCustomers() {
+		
+		return cdao.findAll();
+	}
+
+	@Override
+	public double checkEmi(String scheme, double amount, double period) {
+		double emi=0;
+		double rate=0;
+		double am = amount;
+		double time= period;
+		
+		switch(scheme) {
+		
+		case "Home Loan":
+			
+			rate=(am*12)/100;
+			emi = (am + rate)/time;
+		    break;
+		
+		case "Car Loan":
+			
+			rate=(am*15)/100;
+			emi = (am + rate)/time;
+		    break;
+		
+		case "Medical Loan":
+			rate=(am* 14)/100;
+			emi = (am + rate)/time;
+		    break;
+		    
+		case "Education Loan":
+			rate=(am*8)/100;
+			emi = (am + rate)/time;
+		    break;
+		}
+		
+		return emi;
+	
 	}
 
 

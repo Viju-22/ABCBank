@@ -16,21 +16,21 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	LoanSchemeDao schemedao;
 
 	@Override
-	public List<LoanScheme> addLoanScheme(LoanScheme ls) {
+	public LoanScheme addLoanScheme(LoanScheme ls) {
 		schemedao.saveAndFlush(ls);
-		return schemedao.findAll();
+		return ls;
 	}
 
 	@Override
-	public List<LoanScheme> updateLoanScheme(LoanScheme ls) {
+	public LoanScheme updateLoanScheme(LoanScheme ls) {
 		schemedao.saveAndFlush(ls);
-		return schemedao.findAll();
+		return ls;
 	}
 
 	@Override
-	public List<LoanScheme> deleteLoanScheme(Integer id) {
+	public Boolean deleteLoanScheme(Integer id) {
 		schemedao.deleteById(id);
-		return schemedao.findAll();
+		return true;
 	}
 
 	@Override

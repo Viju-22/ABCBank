@@ -3,14 +3,15 @@ package com.cg.controllers;
 import java.util.List;
 
 
-
-
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ import io.swagger.annotations.Api;
 @Api
 @RestController
 @RequestMapping("/customer")
+@Validated
 public class CustomerController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
@@ -46,25 +48,22 @@ public class CustomerController {
 	RestTemplate restTemplate;
 
 	@PostMapping("/applyforloan")
-	public String applyForLoan(@RequestBody LoanRequest request) {
+	public String applyForLoan(@Valid  @RequestBody LoanRequest request) {
 		logger.info("Applying for a Loan Scheme");
-		requestservice.addloanRequest(request);
-		return "Applied Successfully";
+		return requestservice.addloanRequest(request);
+		
 	}
 
 	@PostMapping("/addcustomer")
-	public List<Customer> addCustomer(@RequestBody Customer c) {
-
+	public Customer addCustomer(@Valid @RequestBody Customer c) {
+		logger.info("In Customer Controller to add a Customer !!!");
 		return custservice.addCustomer(c);
 
 	}
 
-	@PutMapping("/updatecustomer")
-	public List<Customer> updateCustomer(@RequestBody Customer c) {
-		return custservice.updateCustomer(c);
-	}
+
 	
-	@GetMapping("/getcustomerbyid")
+	@GetMapping("/getcustomerbyid/{id}")
 	public Customer getCustomerbyId(@PathVariable Integer id) throws CustomerNotFoundException {
 		
 		logger.info("In Customer Controller to retrieve an Customer by Id ..>!!!");
@@ -80,27 +79,27 @@ public class CustomerController {
 		return cust;
 	}
 
-	@DeleteMapping("/removecustomer/{id}") 
-	public List<Customer> removeCustomer(@PathVariable Integer id) throws CustomerNotFoundException {
-		logger.info("In Customer Controller to remove Customer by Id..>!!!");
-		Customer cust = null;
-		try{
-			logger.info("Customer Id to be searched..."+id);
-			cust = custservice.getCustomerById(id);
-		}catch(Exception e) {
-			
-			throw new CustomerNotFoundException("Enter valid Customer id ");
-		}
-		
-		return custservice.removeCustomer(id);	
-	
-	}
+
 
 	@GetMapping(value = "/getschemefromadmin")
 	public ResponseEntity<String> getSchemes() {
 		String schemes = restTemplate.getForObject("http://localhost/admins/admin/viewallscheme", String.class);
 		return ResponseEntity.ok(schemes);
 	}
-
+	
+	@GetMapping(value="/viewallcustomers")
+	public List<Customer> viewCustomers(){
+		return custservice.viewAllCustomers();
+		
+	}
+	
+	
+	@GetMapping(value="/checkemi/{scheme}/{amount}/{period}")
+	public double checkEmi(@PathVariable String scheme,@PathVariable double amount,@PathVariable double period) {
+		return custservice.checkEmi(scheme, amount, period);		
+		
+	}
 }
+
+
 

@@ -2,9 +2,12 @@ package com.cg.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,7 @@ import io.swagger.annotations.Api;
 @Api
 @RestController()
 @RequestMapping("/admin")
+@Validated
 public class AdminController {
     
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
@@ -31,21 +35,22 @@ public class AdminController {
 	LoanSchemeService loanschemeservice;
 	
 	@PostMapping("/addscheme")
-	public List<LoanScheme> addLoanScheme(@RequestBody LoanScheme l){
+	public LoanScheme addLoanScheme(@Valid @RequestBody LoanScheme l){
 		
 		return loanschemeservice.addLoanScheme(l);
 		
 	}
 	
 	@PutMapping("/updatescheme")
-	public List<LoanScheme> updateLoanScheme(@RequestBody LoanScheme l){
+	public LoanScheme updateLoanScheme(@Valid @RequestBody LoanScheme l){
 		
 		return loanschemeservice.updateLoanScheme(l);
 		
 	}
 	
+	@GetMapping(value="/getschemebyid/{id}")
 	public LoanScheme getLoanSchemeById(@PathVariable Integer id) throws LoanSchemeNotFoundException {
-		logger.info("In Admin Controller to retrieve an Loan Scheme by Id ..>!!!");
+		logger.info("In Admin Controller to retrieve a Loan Scheme by Id ..>!!!");
 		 
 		LoanScheme l = null;
 		try{
@@ -60,7 +65,7 @@ public class AdminController {
 	}
 	
 	@DeleteMapping("/deletescheme/{id}")
-	public List<LoanScheme> deleteLoanScheme(@PathVariable Integer id) throws LoanSchemeNotFoundException{
+	public Boolean deleteLoanScheme(@PathVariable Integer id) throws LoanSchemeNotFoundException{
 		
 		logger.info("In Admin Controller to delete LoanScheme by Id ..>!!!");
 		
@@ -73,13 +78,12 @@ public class AdminController {
 			throw new LoanSchemeNotFoundException("Enter an existing  LoanRequest id to be deleted  ");
 		}
 		
-		
 		return loanschemeservice.deleteLoanScheme(id);
 		
 	}
 	
 	@GetMapping("/viewallscheme")
-	public List<LoanScheme> viwlAllLoanSchemes(){
+	public List<LoanScheme> viewAllLoanSchemes(){
 		return loanschemeservice.viewAllScheme();
 	}
 	

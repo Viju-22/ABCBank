@@ -1,42 +1,70 @@
 package com.cg.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="customer")
-public class Customer {
+public class Customer implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int cust_id;
-	private String name;
-	private long mobile;
-	private String email;
-	private String password;
+	private int custid;
 	
-	public Customer() {
-		
-	}
+	@NotBlank( message ="Customer Name is Mandatory")
+	@Size(min=5 , max = 20 , message ="Customer Name must be between 5-20 characters")
+	private String name;
+	
+	@NotBlank(message="Contact Number is mandatory")
+	@Pattern(regexp= "[0-9]{10}", message ="Enter Valid Contact Number")
+	private String mobile;
+	
+	@NotBlank(message="Email is mandatory")
+	@Pattern(regexp= "[A-Za-z0-9]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}", message ="Invalid Pattern for Email")
+	private String email;
+	
+	@NotBlank(message="Password is mandatory")
+	@Pattern(regexp= "[A-Za-z]+@[0-9]+", message ="Invalid Pattern for Password")
+	private String password;
 
-	public Customer(int cust_id, String name, long mobile, String email, String password) {
+	public Customer(int custid,
+			@NotBlank(message = "Customer Name is Mandatory") @Size(min = 5, max = 20, message = "Customer Name must be between 5-20 characters") String name,
+			@NotBlank(message = "Contact Number is mandatory") @Pattern(regexp = "[0-9]{10}", message = "Enter Valid Contact Number") String mobile,
+			@NotBlank(message = "Email is mandatory") @Pattern(regexp = "[A-Za-z0-9]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}", message = "Invalid Pattern for Email") String email,
+			@NotBlank(message = "Password is mandatory") @Pattern(regexp = "[A-Za-z]+@[0-9]+", message = "Invalid Pattern for Password") String password) {
 		super();
-		this.cust_id = cust_id;
+		this.custid = custid;
 		this.name = name;
 		this.mobile = mobile;
 		this.email = email;
 		this.password = password;
 	}
 
-	public int getCust_id() {
-		return cust_id;
+	public Customer() {
+		
 	}
 
-	public void setCust_id(int cust_id) {
-		this.cust_id = cust_id;
+	public int getCustid() {
+		return custid;
+	}
+
+	public void setCustid(int custid) {
+		this.custid = custid;
 	}
 
 	public String getName() {
@@ -47,12 +75,12 @@ public class Customer {
 		this.name = name;
 	}
 
-	public long getMobile() {
+	public String getMobile() {
 		return mobile;
 	}
 
-	public void setMobile(long mobile) {
-		this.mobile = mobile;
+	public void setMobile(String string) {
+		this.mobile = string;
 	}
 
 	public String getEmail() {
@@ -71,11 +99,16 @@ public class Customer {
 		this.password = password;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "Customer [cust_id=" + cust_id + ", name=" + name + ", mobile=" + mobile + ", email=" + email
-				+ "]";
+		return "Customer [custid=" + custid + ", name=" + name + ", mobile=" + mobile + ", email=" + email
+				+ ", password=" + password + "]";
 	}
 	
-
+	
+	
 }

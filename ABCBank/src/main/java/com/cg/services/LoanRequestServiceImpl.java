@@ -16,13 +16,13 @@ public class LoanRequestServiceImpl implements LoanRequestService{
 	LoanRequestDao requestdao;
 
 	@Override
-	public void addloanRequest(LoanRequest request) {
+	public String addloanRequest(LoanRequest request) {
 		requestdao.saveAndFlush(request);
-		
+		return "Applied Successfully";
 	}
 
 	@Override
-	public List<LoanRequest> verifyLoanRequest(LoanRequest request) {
+	public String verifyLoanRequest(LoanRequest request) {
 		
 		LoanRequest result = request;
 		if(request.getAge() >=20 && request.getAge()<=40 && request.getIncome()>50000) {
@@ -31,14 +31,10 @@ public class LoanRequestServiceImpl implements LoanRequestService{
 			result.setStatus("Rejected");
 		}
 		requestdao.saveAndFlush(result);
-		return requestdao.findAll();
+		return result.getStatus();
 	}
 
-	@Override
-	public List<LoanRequest> deleteloanRequest(Integer id) {
-		requestdao.deleteById(id);
-		return requestdao.findAll();
-	}
+	
 
 	@Override
 	public List<LoanRequest> viewAllLoanRequests() {

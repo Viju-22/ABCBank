@@ -14,6 +14,7 @@ public class LoanSchemeNotFoundException extends Exception {
 	public LoanSchemeNotFoundException(String msg) {
 		
 		super(msg);
+		System.out.println("Inside LoanSchemeNotFoundException");
 	}
 
 }
